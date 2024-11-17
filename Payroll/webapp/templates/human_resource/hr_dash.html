@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: #fce8d8;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            padding: 15px 0;
+            font-size: 18px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #4e7b73;
+            color: white;
+            padding-left: 10px;
+            border-radius: 4px;
+        }
+
+        /* Main content styling */
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+
+        .content-header {
+            background-color: #f5e9d3;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .content-header h2 {
+            color: #333;
+            font-size: 28px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5e9d3;
+        }
+
+        /* Hamburger menu styling */
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 100%;
+            height: 4px;
+            background-color: #333;
+        }
+
+        /* Media query for smaller screens */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                transform: translateX(-200px);
+                transition: transform 0.3s ease;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar for HR Dashboard -->
+    <div class="sidebar" id="sidebar">
+        <h1>HR Management</h1>
+        <a href="#">Employee Records</a>
+        <a href="#">Leave Requests</a>
+        <a href="#">Payroll Reports</a>
+        <a href="#">Attendance</a>
+        <a href="index.html">Log Out</a>
+    </div>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="content-header">
+            <h2>Employee Management Dashboard</h2>
+        </div>
+
+        <!-- Employee Table Display -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th>Contact Number</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.emp_ID }}</td>
+                    <td>{{ employee.fname }}</td>
+                    <td>{{ employee.lname }}</td>
+                    <td>{{ employee.gender }}</td>
+                    <td>{{ employee.age }}</td>
+                    <td>{{ employee.address }}</td>
+                    <td>{{ employee.contact_number }}</td>
+                    <td>{{ employee.emp_email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+
+        hamburger.addEventListener('click', function () {
+            sidebar.classList.toggle('show');
+        });
+    </script>
+
+</body>
+</html>
