@@ -33,8 +33,8 @@ class Admin(models.Model):
     age = models.IntegerField()
     address = models.TextField()
     contact_number = models.CharField(max_length=15)
-    admin_email = models.EmailField(unique=True)
-    admin_pass = models.CharField(max_length=255)
+    username = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.fname} {self.lname}"

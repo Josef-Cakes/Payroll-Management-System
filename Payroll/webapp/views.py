@@ -1,51 +1,36 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login, logout
 from .models import Employee, Admin, Salary, Deduction
 
 # Home view
 def home(request):
-    return render(request, 'index.html')
+    return render(request, 'home.html')
 
-# Login view
 # Login view
 def login_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email', '').strip()
-        password = request.POST.get('password', '')
-
-        # Check if the user is an Admin
-        admin_user = Admin.objects.filter(admin_email=email).first()
-        if admin_user and check_password(password, admin_user.admin_pass):
-            request.session['user_id'] = admin_user.admin_ID  # Set admin ID
-            request.session['user_role'] = 'admin'            # Set role to admin
-            return redirect('webapp/hr_dashboard')                   # Redirect to HR dashboard
-
-        # Check if the user is an Employee
-        employee_user = Employee.objects.filter(emp_email=email).first()
-        if employee_user and check_password(password, employee_user.emp_pass):
-            request.session['user_id'] = employee_user.emp_ID  # Set employee ID
-            request.session['user_role'] = 'employee'          # Set role to employee
-            return redirect('webapp/emp_dashboard')                   # Redirect to Employee dashboard
-
-        # If we reach here, the credentials are invalid
-        messages.error(request, "Invalid email or password.")
-    # If the request method is not POST, render the login page
-    return render(request, 'webapp/index.html')
+    if request.method == "POST":
+        print(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password = password)
+        if user is not None:
+            login(request, user)
+            return redirect('hr_dashboard')
+        else:
+            return redirect('hr_dashboard') 
+    else:
+        return render(request, 'index.html', {})
+        
 
 
 # Admin (HR) dashboard view
 def hr_dashboard_view(request):
-    if request.session.get('user_role') == 'admin':
-        return render(request, 'hr_dash.html', {})
-    return redirect('home')  # Redirect to home if not an admin
+    return render(request, 'human_resource/hr_dash.html', {})
 
 # Employee dashboard view
 def emp_dashboard_view(request):
-    if request.session.get('user_role') == 'employee':
-        return render(request, 'emp_dash.html')
-    return redirect('home')  # Redirect to home if not an employee
+    return render(request, 'employee/emp_dash.html', {})
 
 # Salary dashboard view
 def salary_report_view(request):
@@ -78,5 +63,6 @@ def leave_dashboard_view(request):
     return render(request, 'leave_report.html')
 
 def log_out_view(request):
-    logout(request)
-    return redirect('home')
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    return render(request, 'home.html', {})

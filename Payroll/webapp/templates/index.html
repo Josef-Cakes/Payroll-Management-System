@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payroll System Login</title>
     <style>
-        /* Styles remain unchanged */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -19,12 +19,14 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100%;
         }
+
         .login-box {
             background-color: #f5e9d3;
             padding: 40px;
@@ -33,6 +35,7 @@
             width: 350px;
             text-align: center;
         }
+
         .header h1 {
             background-color: #e9a266;
             padding: 15px;
@@ -41,12 +44,14 @@
             color: #333;
             margin-bottom: 20px;
         }
+
         .login-form label {
             display: block;
             font-size: 16px;
             margin-bottom: 8px;
             text-align: left;
         }
+
         .login-form input {
             width: 100%;
             padding: 10px;
@@ -54,13 +59,23 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .password-container {
             position: relative;
         }
+
         .password-container input {
             width: 100%;
-            padding-right: 40px;
+            padding-right: 40px; /* Adjust padding to leave space for button */
         }
+
+        .password-container img {
+            position: absolute;
+            right: 10px;
+            top: 8px;
+            cursor: pointer;
+        }
+
         button {
             width: 100%;
             padding: 10px;
@@ -71,9 +86,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #21443f;
         }
+
         .alert {
             color: red;
             margin-top: 10px;
@@ -86,46 +103,40 @@
             <div class="header">
                 <h1>PAYROLL SYSTEM</h1>
             </div>
-            <form class="login-form" id="loginForm">
+            <form class="login-form" method="POST" action="">
+                {% csrf_token %}
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="text" id="email" name="username" required>
 
                 <label for="password">Password:</label>
                 <div class="password-container">
                     <input type="password" id="password" name="password" required>
+                    <!-- <img src="open.png" id="eyeopen"> -->
                 </div>
 
-                <button type="button" id="loginButton">Log in</button>
+                <button type="submit">Log in</button>
             </form>
-            <div class="alert" id="errorMessage" style="display: none;"></div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     
-    <script>
-        document.getElementById("loginButton").addEventListener("click", function() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+    <!-- <script>
+        let eyeicon = document.getElementById("eyeopen");
+        let pwd = document.getElementById("password");
 
-            fetch("{% url 'login' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                body: JSON.stringify({ email: email, password: password })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = data.redirect_url; // Redirect to dashboard
-                } else {
-                    const errorDiv = document.getElementById("errorMessage");
-                    errorDiv.style.display = "block";
-                    errorDiv.textContent = data.error;
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
-    </script>
+        eyeicon.onclick = function() {
+            if (pwd.type == "password") {
+                pwd.type = "text";
+                eyeicon.src = "close.png"; // Change to the close icon
+            } else {
+                pwd.type = "password";
+                eyeicon.src = "open.png"; // Change back to the open icon
+            }
+        };
+    </script> -->
 </body>
 </html>
