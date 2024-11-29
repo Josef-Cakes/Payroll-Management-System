@@ -105,14 +105,7 @@
             </div>
             <form class="login-form" method="POST" action="">
                 {% csrf_token %}
-                <label for="email">Email:</label>
-                <input type="text" id="email" name="username" required>
-
-                <label for="password">Password:</label>
-                <div class="password-container">
-                    <input type="password" id="password" name="password" required>
-                    <!-- <img src="open.png" id="eyeopen"> -->
-                </div>
+                {{ form.as_p }}
 
                 <button type="submit">Log in</button>
             </form>
